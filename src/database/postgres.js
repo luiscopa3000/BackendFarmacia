@@ -9,5 +9,5 @@ const sequelize = new Sequelize('bsthwsfbpulvq1wpc0gv', 'uduwnvnfzz5zxjwlgjgi', 
     },
     logging: false,
 });
-
+//Correccion de errores
 module.exports = sequelize;
