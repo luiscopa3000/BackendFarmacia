@@ -26,17 +26,18 @@ router.post('/registrouser', async (req, res) => {
     try {
         const { ci, ci_garante, usert, passwordt, correo_electronico, rol } = req.body;
 
+
+        // Hash de la contraseña antes de almacenarla
+        const hashedPassword = await bcrypt.hash(passwordt, 10);
+        const hashedusert = await bcrypt.hash(usert, 10);
+        console.log(hashedusert)
+        console.log(hashedPassword)
         // Verifica si el usuario ya existe
-        const usuarioExistente = await Empleado.findOne({ where: { usert } });
+        const usuarioExistente = await Empleado.findOne({ where: { usert: hashedusert } });
 
         if (usuarioExistente) {
             return res.status(400).json({ mensaje: 'El usuario ya existe' });
         }
-
-        // Hash de la contraseña antes de almacenarla
-        const hashedPassword = await bcrypt.hash(passwordt, 10);
-        const hashedusert = await bcrypt.hash(passwordt, 10);
-
         // Crea un nuevo usuario en la base de datos
         const nuevoUsuario = await Empleado.create({
             ci,
@@ -76,24 +77,25 @@ router.post('/registro-persona', async (req, res) => {
     }
 });
 
-//Este es el EndPoint para logearse en el sistema
+//Este es el EndPoint para logearse en el sistema// Este es el EndPoint para logearse en el sistema
 router.post('/login', async (req, res) => {
     try {
         const { usert, passwordt } = req.body;
 
-        // Encriptar la contraseña antes de buscar en la base de datos
-        const hashedPassword = await bcrypt.hash(passwordt, 10);
-        const hashedusert = await bcrypt.hash(usert, 10);
+        // Obtener todos los usuarios de la base de datos
+        const usuarios = await Empleado.findAll();
 
-        // Buscar el usuario en la base de datos
-        const usuario = await Empleado.findOne({ where: { hashedusert } });
+        // Buscar el usuario con el usert proporcionado
+        const usuario = usuarios.find((u) => bcrypt.compareSync(usert, u.usert));
+
         if (!usuario) {
             return res.status(401).json({ mensaje: 'Credenciales inválidas' });
         }
 
-        // Comparar las contraseñas encriptadas
-        const passwordMatch = await bcrypt.compare(hashedPassword, usuario.passwordt);
-        if (!passwordMatch) {
+        // Comparar la contraseña proporcionada con la contraseña encriptada en la base de datos
+        const passwordtMatch = bcrypt.compareSync(passwordt, usuario.passwordt);
+
+        if (!passwordtMatch) {
             return res.status(401).json({ mensaje: 'Credenciales inválidas' });
         }
 
@@ -117,6 +119,28 @@ router.post('/login', async (req, res) => {
 });
 
 
+router.post('/delete', async (req, res) => {
+    const { ci } = req.body;
+    try {
+        const resultado = await Empleado.destroy({
+            where: {
+                ci: ci
+            }
+        });
+        console.log(resultado)
+    } catch (error) {
+        console.log(error)
+    }
+})
+router.post('/mostrar', async (req, res) => {
+    try {
+        const reultado = await Empleado.findAll();
+        res.send(reultado)
+    } catch (error) {
+        res.send(error)
+
+    }
+})
 // EndPoint para devolver las lista de productos del sucursal x
 router.post('/lsmedicament-sucx', async (req, res) => {
     const { id_sucursal } = req.body;
@@ -143,4 +167,6 @@ router.get('/test', verificarToken, (req, res) => {
         res.sendStatus(404)
     }
 })
+
+
 module.exports = router;
