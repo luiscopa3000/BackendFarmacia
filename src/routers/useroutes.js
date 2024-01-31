@@ -81,12 +81,19 @@ router.post('/login', async (req, res) => {
     try {
         const { usert, passwordt } = req.body;
 
-        // Busca el usuario en la base de datos
-        const usuario = await Empleado.findOne({ where: { usert } });
+        // Encriptar la contraseña antes de buscar en la base de datos
+        const hashedPassword = await bcrypt.hash(passwordt, 10);
+        const hashedusert = await bcrypt.hash(usert, 10);
+
+        // Buscar el usuario en la base de datos
+        const usuario = await Empleado.findOne({ where: { hashedusert } });
         if (!usuario) {
             return res.status(401).json({ mensaje: 'Credenciales inválidas' });
         }
-        if (usuario.passwordt != passwordt) {
+
+        // Comparar las contraseñas encriptadas
+        const passwordMatch = await bcrypt.compare(hashedPassword, usuario.passwordt);
+        if (!passwordMatch) {
             return res.status(401).json({ mensaje: 'Credenciales inválidas' });
         }
 
@@ -98,10 +105,10 @@ router.post('/login', async (req, res) => {
             // Puedes incluir más información del usuario si es necesario
         };
 
-        // Genera el token
+        // Generar el token
         const token = generarToken(usuarioAutenticado);
 
-        // Devuelve el token y la información del usuario
+        // Devolver el token y la información del usuario
         res.json({ token, usuario: usuarioAutenticado });
     } catch (error) {
         console.error(error);
