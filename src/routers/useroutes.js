@@ -111,7 +111,7 @@ router.post('/login', async (req, res) => {
         const token = generarToken(usuarioAutenticado);
 
         // Devolver el token y la información del usuario
-        res.json({ token, usuario: usuarioAutenticado });
+        res.json({ token });
     } catch (error) {
         console.error(error);
         res.status(500).json({ mensaje: 'Error en el servidor' });
@@ -157,7 +157,23 @@ router.post('/lsmedicament-sucx', async (req, res) => {
         res.sendStatus(404);
     }
 });
-
+//Consultar datos de una persona de ci x
+router.post('/personax', verificarToken, async(req,res) => {
+    const { ci } = req.body;
+    try {
+        const persona = await Persona.findOne({
+            where: {
+                ci: ci
+            }
+        })
+        if (!persona) {
+            return res.status(404).json({ mensaje: 'Persona no encontrada' })
+        }
+        res.send(persona)
+    } catch (error) {
+        res.status(500).json({ mensaje: 'Error en el servidor' });
+    }
+})
 
 //Este es el EndPoint para hacer el test de servidor
 router.get('/test', verificarToken, (req, res) => {

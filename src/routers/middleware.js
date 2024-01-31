@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = '234rsdgsdter6rgfdge5436y6rujg3q3'; // Deberías almacenar esto de manera segura, por ejemplo, en variables de entorno.
 
 function generarToken(usuario) {
-  return jwt.sign({ usuario }, secretKey, { expiresIn: '2h' });
+  return jwt.sign(usuario, secretKey, { expiresIn: '2h' });
 }
 
 function verificarToken(req, res, next) {
