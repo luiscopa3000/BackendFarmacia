@@ -175,6 +175,19 @@ router.post('/personax', verificarToken, async(req,res) => {
     }
 })
 
+
+//EndPoint para manejar el registro de medicamentos
+
+router.post('/rgmedicamento', async(req,res) => {
+
+    try {
+        await Producto.create(req.body);
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500)
+    }
+})
+
 //Este es el EndPoint para hacer el test de servidor
 router.get('/test', verificarToken, (req, res) => {
     try {
@@ -183,6 +196,4 @@ router.get('/test', verificarToken, (req, res) => {
         res.sendStatus(404)
     }
 })
-
-
 module.exports = router;
