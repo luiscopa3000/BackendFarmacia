@@ -181,7 +181,7 @@ router.post('/personax', verificarToken, async(req,res) => {
 router.post('/rgmedicamento', async(req,res) => {
     try {
         await Producto.create(req.body);
-        res.sendStatus(200);
+        res.status(200).json({ mensaje: 'Producto registrado exitosamente' });
     } catch (error) {
         console.error(error)
         res.status(500).json({ error:error.parent.detail })
