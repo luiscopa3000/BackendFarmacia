@@ -170,6 +170,7 @@ router.post('/personax', verificarToken, async(req,res) => {
         }
         res.send(persona)
     } catch (error) {
+        console.error(error)
         res.status(500).json({ mensaje: 'Error en el servidor' });
     }
 })
@@ -182,6 +183,7 @@ router.post('/rgmedicamento', async(req,res) => {
         await Producto.create(req.body);
         res.sendStatus(200);
     } catch (error) {
+        console.error(error)
         res.status(500).json({ error:error.parent.detail })
     }
 })
