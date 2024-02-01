@@ -179,12 +179,11 @@ router.post('/personax', verificarToken, async(req,res) => {
 //EndPoint para manejar el registro de medicamentos
 
 router.post('/rgmedicamento', async(req,res) => {
-
     try {
         await Producto.create(req.body);
         res.sendStatus(200);
     } catch (error) {
-        res.sendStatus(500)
+        res.status(500).json(error)
     }
 })
 
