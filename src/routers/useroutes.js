@@ -142,9 +142,8 @@ router.post('/mostrar', async (req, res) => {
     }
 })
 // EndPoint para devolver las lista de productos del sucursal x
-router.post('/lsmedicament-sucx', async (req, res) => {
+router.post('/lsmedicament-sucx', verificarToken,async (req, res) => {
     const { id_sucursal } = req.body;
-
     try {
         // Busca todos los productos asociados a la sucursal mediante la relación definida en tu modelo
         const productos = await Producto.findAll({
