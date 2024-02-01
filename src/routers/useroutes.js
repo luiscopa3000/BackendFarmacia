@@ -183,7 +183,7 @@ router.post('/rgmedicamento', async(req,res) => {
         await Producto.create(req.body);
         res.sendStatus(200);
     } catch (error) {
-        res.status(500).json(error)
+        res.status(500).json({ error:error.parent.detail })
     }
 })
 
