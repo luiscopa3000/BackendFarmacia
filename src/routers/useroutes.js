@@ -190,7 +190,7 @@ router.post('/rgmedicamento', async (req, res) => {
 
 
 //End Point para eliminar un producto de id x
-router.post('/delete-prod-x', async (req, res) => {
+router.post('/delete-prod-x', verificarToken,async (req, res) => {
     const { id_productos } = req.body;
     try {
         // Encuentra el producto por ID y elimínalo
