@@ -142,7 +142,7 @@ router.post('/mostrar', async (req, res) => {
     }
 })
 // EndPoint para devolver las lista de productos del sucursal x
-router.post('/lsmedicament-sucx', verificarToken,async (req, res) => {
+router.post('/lsmedicament-sucx', verificarToken, async (req, res) => {
     const { id_sucursal } = req.body;
     try {
         // Busca todos los productos asociados a la sucursal mediante la relación definida en tu modelo
@@ -157,7 +157,7 @@ router.post('/lsmedicament-sucx', verificarToken,async (req, res) => {
     }
 });
 //Consultar datos de una persona de ci x
-router.post('/personax', verificarToken, async(req,res) => {
+router.post('/personax', verificarToken, async (req, res) => {
     const { ci } = req.body;
     try {
         const persona = await Persona.findOne({
@@ -178,16 +178,38 @@ router.post('/personax', verificarToken, async(req,res) => {
 
 //EndPoint para manejar el registro de medicamentos
 
-router.post('/rgmedicamento', async(req,res) => {
+router.post('/rgmedicamento', async (req, res) => {
     try {
         await Producto.create(req.body);
         res.status(200).json({ mensaje: 'Producto registrado exitosamente' });
     } catch (error) {
         console.error(error)
-        res.status(500).json({ error:error.parent.detail })
+        res.status(500).json({ error: error.parent.detail })
     }
 })
 
+
+//End Point para eliminar un producto de id x
+router.post('/delete-prod-x', async (req, res) => {
+    const { id_productos } = req.body;
+    try {
+        // Encuentra el producto por ID y elimínalo
+        const productoEliminado = await Producto.destroy({
+            where: {
+                id_productos: id_productos+""
+            }
+        });
+        if (productoEliminado) {
+            res.status(200).json({ mensaje: 'Producto eliminado exitosamente' });
+        } else {
+            res.status(404).json({ mensaje: 'Producto no encontrado' });
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+})
 //Este es el EndPoint para hacer el test de servidor
 router.get('/test', verificarToken, (req, res) => {
     try {
