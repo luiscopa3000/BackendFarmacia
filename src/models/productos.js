@@ -26,15 +26,6 @@ const Producto = sequelize.define('productos', {
     },
     presentacion: {
         type: DataTypes.STRING
-    },
-    stock_minimo: {
-        type: DataTypes.NUMBER
-    },
-    stock: {
-        type: DataTypes.NUMBER
-    },
-    id_sucursal: {
-        type: DataTypes.STRING
     }
 })
 
