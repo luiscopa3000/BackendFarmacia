@@ -51,7 +51,7 @@ router.post('/registrouser', async (req, res) => {
         res.status(201).json({ mensaje: 'Usuario registrado exitosamente', usuario: nuevoUsuario });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ mensaje: 'Error en el servidor' });
+        res.status(500).json({ mensaje: error });
     }
 });
 //Este es el EndPoint para crear nuevas personas
