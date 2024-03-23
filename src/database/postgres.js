@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('bsthwsfbpulvq1wpc0gv', 'uduwnvnfzz5zxjwlgjgi', 'ZSxUxCBwDGFzx1ufAFxKAdEtDwa8Km', {
+const sequelize = new Sequelize('bsthwsfbpulvq1wpc0gv', 'uduwnvnfzz5zxjwlgjgi', 'dHVuwjNGXJKV8bUQHodH', {
     host: 'bsthwsfbpulvq1wpc0gv-postgresql.services.clever-cloud.com',
     port: '50013',
     dialect: 'postgres',
