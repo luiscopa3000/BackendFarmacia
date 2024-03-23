@@ -23,8 +23,9 @@ router.get('/', (req, res) => {
 
 //Este es el EndPoint para crear nuevos usuarios
 router.post('/registrouser', async (req, res) => {
+    const { ci, ci_garante, usert, passwordt, correo_electronico, rol } = req.body;
+    console.log(req.body);
     try {
-        const { ci, ci_garante, usert, passwordt, correo_electronico, rol } = req.body;
 
 
         // Hash de la contraseña antes de almacenarla
